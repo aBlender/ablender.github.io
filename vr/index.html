@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>House - Example</title>
+  <meta name="description" content="Hello, World! - A-Frame">
+  <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+  <script src="randomizer.js"></script>
+  <script src="index.js"></script>
+</head>
+<body>
+  <a-scene>
+    <a-entity light="type: ambient; color: #BBB; intensity: 0.4"></a-entity>
+    <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
+    <a-box id="floor" position="0 0 0" rotation="0 0 0" color="cyan" scale="24 0.2 24"></a-box>
+    <a-box id="wall" position="-12 3 0" rotation="0 0 0" color="yellow" scale="0.2 6 24"></a-box>
+    <a-box id="wall" position="12 3 0" rotation="0 0 0" color="yellow" scale="0.2 6 24"></a-box>
+    <a-box id="wall" position="0 3 -12" rotation="0 0 0" color="yellow" scale="24 6 0.2"></a-box>
+    <a-box id="wall" position="0 3 12" rotation="0 0 0" color="yellow" scale="24 6 0.2"></a-box>
+    <a-sphere id="ball" random-color position="5 1 -7" radius="1" color="#EF2D5E">
+      <a-animation attribute="position" to="5 1.5 -7" direction="alternate" dur="400" repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere id="ball" random-color position="-5 1 -7" radius="1">
+      <a-animation attribute="position" to="-5 3 -7" direction="alternate" dur="700" repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere id="ball" random-color position="-7 1 0" radius="1" color="#EF2D5E">
+      <a-animation attribute="position" to="-7 4 0" direction="alternate" dur="1000" repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere id="ball" random-color position="7 1 0" radius="1" color="#EF2D5E">
+      <a-animation attribute="position" to="7 2.5 0" direction="alternate" dur="800" repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere id="ball" random-color position="5 1 4" radius="1" color="#EF2D5E">
+      <a-animation attribute="position" to="5 1.7 4" direction="alternate" dur="600" repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere id="ball" random-color position="2 1 8" radius="1" color="#EF2D5E">
+      <a-animation attribute="position" to="2 2 8" direction="alternate" dur="1200" repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere random-color random-position random-bounce radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look radius="1"></a-sphere>
+    <a-sphere random-color random-position random-bounce-look="min:20;max:25" radius="1"></a-sphere>
+    <a-light type="spot" color="orange" intensity="0" angle="45" position="0 0 0" penumbra="0.5" target="#chest">
+      <a-box id="chest" color="gold" magic-chest random-position random-bounce-look="min:10;max:10;dur:5000">
+      </a-box>
+    </a-light>
+    <a-sky color="#ECECEC"></a-sky>
+
+    <a-camera>
+      <a-cursor></a-cursor>
+    </a-camera>
+  </a-scene>
+</body>
+
+</html>

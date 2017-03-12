@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>House - Starter Code</title>
+  <meta name="description" content="Hello, World! - A-Frame">
+  <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+  <script src="randomizer.js"></script>
+  <script src="index.js"></script>
+</head>
+<body>
+  <a-scene fog="type: linear; color: cyan; far: 60; near: 0">
+  <a-assets>
+    <a-asset-item id="house-obj" src="house.obj"></a-asset-item>
+    <a-asset-item id="house-mtl" src="house.mtl"></a-asset-item>
+    <a-asset-item id="carloshead-obj" src="carlosbust.obj"></a-asset-item>
+    <a-asset-item id="carloshead-mtl" src="carlosbust.mtl"></a-asset-item>
+  </a-assets>
+  <a-sky color="cyan"></a-sky>
+  <a-entity obj-model="obj: #house-obj; mtl: #house-mtl" position="8 -8 -5" rotation="-90 0 0" scale="0.25 0.25 0.25"></a-entity>
+  <a-entity obj-model="obj: #carloshead-obj; mtl: #carloshead-mtl" position="-12 -6 -4" rotation="-90 45 0" scale="0.2 0.2 0.2"></a-entity>
+  <a-camera position="-7 1.6 3" wasd-controls="fly: true" look-controls>
+    <!-- <a-animation attribute="position" to="-3 1.5 -10" direction="alternate" dur="6000" repeat="indefinite"></a-animation> -->
+  </a-camera>
+</a-scene>
+</body>
+</html>
