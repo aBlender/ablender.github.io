@@ -1,0 +1,93 @@
+
+<html>
+  <head>
+    <title>Audio Visualizer!</title>
+    <meta name="description" content="Various audio visualizations combined together."></meta>
+    <meta property="og:image" content="https://raw.githubusercontent.com/ngokevin/kframe/master/components/audioanalyser/examples/showcase/preview.gif"></meta>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
+    <script src="/build.js"></script>
+    <script src="/audio/audioanalyser-levels-scale.js"></script>
+    <script src="/audio/audioanalyser-volume-bind.js"></script>
+    <script src="/audio/audioanalyser-volume-scale.js"></script>
+    <script src="/audio/audioanalyser-waveform.js"></script>
+    <script src="/audio/ring-on-beat.js"></script>
+    <script src="/audio/scale-y-color.js"></script>
+    <script src="/audio.js"></script>
+  </head>
+  <body>
+    <a-scene antialias="false" >
+      <a-assets>
+        <a-asset-item id="tslogo-obj" src="ts_logo.obj"></a-asset-item>
+        <a-asset-item id="tslogo-mtl" src="ts_logo.mtl"></a-asset-item>
+        <!-- By Tours. From http://freemusicarchive.org/music/Tours/Enthusiast/Tours_-_Enthusiast. CC Attribution License. -->
+        <audio id="song" loop src="CiderTime.flac" preload="auto"></audio>
+        <img id="floor" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossOrigin="anonymous">
+        <img id="skymap" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossOrigin="anonymous">
+        <a-mixin id="bar"
+          geometry="primitive: box"
+          material="color: rgb(10, 20, 50); shader: flat"
+          scale-y-color="from: 10 20 50; to: 40, 140, 50; maxScale: 15"
+        ></a-mixin>
+      </a-assets>
+      <a-text id="statusText" value="Click to Play" position="-0.7 2.4 -3"></a-text>
+      <!-- Audio analyser. -->
+      <a-entity id="analyser"
+        click-to-play
+        audioanalyser="src: #song"
+        audioanalyser-waveform="radius: 0.5"
+        rotation="90 0 0"
+        position="0 30 0"
+      ></a-entity>
+
+      <!-- Singing box. -->
+      <a-entity id="jim"
+        geometry="primitive: box; depth: 2; height: 5; width: 3.5"
+        material="color: #8B0880"
+        ring-on-beat="analyserEl: #analyser"
+        position="0 0 -7.25"
+      ></a-entity>
+      <a-sphere id="leftEyeball"  position="-1 2 -6" radius="0.5" shader="flat"></a-sphere>
+      <a-sphere id="rightEyeball" position="1 2 -6" radius="0.5" shader="flat"></a-sphere>
+      <a-sphere id="leftEye" color="black" position="-0.81 2.17 -5.57" radius="0.1"></a-sphere>
+      <a-sphere id="rightEye" color="black" position=".70 1.88 -5.64" radius="0.1"></a-sphere>
+      <a-sphere id="mouth"
+        color="#000"
+        audioanalyser-volume-scale="analyserEl: #analyser; multiplier: .004"
+        position="0 1 -6"
+        side="double"
+        shader="flat"
+      ></a-sphere>
+
+      <!-- Spectrum visualization. -->
+      <a-entity
+        audioanalyser-levels-scale="analyserEl: #analyser; max: 50; multiplier: 0.06"
+        entity-generator="mixin: bar; num: 64"
+        layout="type: circle; radius: 10"
+        rotation="0 180 0"
+      ></a-entity>
+
+      <!-- Lights, sky, ground. -->
+      <a-light type="ambient" color="#222"></a-light>
+      <a-light
+        audioanalyser-volume-bind="analyserEl: #analyser; component: light; property: intensity; max: 2.2; multiplier: .01"
+        position="1 2 -1"
+        type="point"
+      ></a-light>
+      <a-entity id="sky"
+        geometry="primitive: sphere; radius: 500; phiLength: 360; phiStart: 0; thetaLength: 90"
+        material="shader: flat; side: back; height: 2048; src: #skymap; width: 2048"
+      ></a-entity>
+      <a-entity id="ground"
+        geometry="primitive: circle; radius: 30.5"
+        rotation="-90 0 0"
+        material="src: #floor"
+      ></a-entity>
+
+      <a-entity obj-model="obj: #tslogo-obj" material="color: #76a352; transparent:true" position="4 0 -5" rotation="-90 -45 0" scale="0.2 0.2 0.2" audioanalyser-volume-bind="analyserEl: #analyser; component: material; property: opacity; max: 1.0; multiplier: .01"></a-entity>
+
+      <a-entity particle-system="preset: snow"></a-entity>
+
+    </a-scene>
+  </body>
+</html>
