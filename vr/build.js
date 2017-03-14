@@ -2,9 +2,9 @@
 require('aframe-entity-generator-component');
 require('aframe-layout-component');
 require('aframe-template-component');
-require('../index');
+require('/index');
 
-},{"../index":2,"aframe-entity-generator-component":3,"aframe-layout-component":4,"aframe-template-component":5}],2:[function(require,module,exports){
+},{"/index":2,"aframe-entity-generator-component":3,"aframe-layout-component":4,"aframe-template-component":5}],2:[function(require,module,exports){
 if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.');
 }
