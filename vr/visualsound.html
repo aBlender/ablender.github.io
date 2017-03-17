@@ -27,18 +27,18 @@
         <img id="floor" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossOrigin="anonymous">
         <img id="skymap" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossOrigin="anonymous">
         <a-mixin id="bar"
-          geometry="primitive: box"
+          geometry="primitive: box; width: 2; depth: 2"
           material="color: rgb(10, 20, 50); shader: flat"
-          scale-y-color="from: 10 20 50; to: 40, 140, 50; maxScale: 15"
+          scale-y-color="from: 10 20 50; to: 140, 200, 255; maxScale: 15"
         ></a-mixin>
       </a-assets>
+
       <a-text id="instructions" value="Click search and say '<artist name or song>'" color: "#FFF" width: "3" position="-2 3.2 -4" rotation="0 0 0"></a-text>
-      <a-text id="songInfo" value="Artist - Track Title" position="-2 2.8 -4" rotation="0 0 0"></a-text>
+      <a-text id="songInfo" value="" position="-2 2.8 -4" rotation="0 0 0"></a-text>
 
       <!-- Audio analyser. -->
       <a-entity id="analyser"
         audioanalyser="src: #song"
-        audioanalyser-waveform="radius: 0.5"
         rotation="90 0 0"
         position="0 30 0"
       ></a-entity>
@@ -70,7 +70,7 @@
       <a-entity
         audioanalyser-levels-scale="analyserEl: #analyser; max: 50; multiplier: 0.06"
         entity-generator="mixin: bar; num: 64"
-        layout="type: circle; radius: 10"
+        layout="type: circle; radius: 16"
         rotation="0 180 0"
       ></a-entity>
 
@@ -88,12 +88,12 @@
       <a-entity id="ground"
         geometry="primitive: circle; radius: 30.5"
         rotation="-90 0 0"
-        material="src: #floor"
+        material="src: #floor; shader: flat"
       ></a-entity>
 
       <a-entity obj-model="obj: #tslogo-obj" material="color: #76a352; transparent:true" position="4 0 -5" rotation="-90 -45 0" scale="0.2 0.2 0.2" audioanalyser-volume-bind="analyserEl: #analyser; component: material; property: opacity; max: 1.0; multiplier: .01"></a-entity>
 
-      <a-entity particle-system="preset: snow"></a-entity>
+      <!-- <a-entity particle-system="preset: snow"></a-entity> -->
       <a-camera>
         <a-cursor fuse="false" color="magenta">
         </a-cursor>
