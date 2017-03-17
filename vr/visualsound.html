@@ -1,13 +1,14 @@
 
 <html>
   <head>
-    <title>Audio Visualizer</title>
+    <title>Audio Visualizer!!!</title>
     <meta name="description" content="Various audio visualizations combined together."></meta>
     <meta property="og:image" content="https://raw.githubusercontent.com/ngokevin/kframe/master/components/audioanalyser/examples/showcase/preview.gif"></meta>
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
     <script src="build.js"></script>
-    <script src="spotify/lib/annyang.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+    <!-- <script src="spotify/lib/annyang.min.js"></script> -->
     <script src="spotify/lib/spotify-web-api.js"></script>
     <script src="audio/audioanalyser-levels-scale.js"></script>
     <script src="audio/audioanalyser-volume-bind.js"></script>
@@ -22,8 +23,7 @@
       <a-assets>
         <a-asset-item id="tslogo-obj" src="ts_logo.obj"></a-asset-item>
         <a-asset-item id="tslogo-mtl" src="ts_logo.mtl"></a-asset-item>
-        <!-- By Tours. From http://freemusicarchive.org/music/Tours/Enthusiast/Tours_-_Enthusiast. CC Attribution License. -->
-        <audio id="song" loop src="CiderTime.flac" preload="auto"></audio>
+        <audio id="song" loop src="CiderTime.flac" preload="auto" crossOrigin="anonymous"></audio>
         <img id="floor" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossOrigin="anonymous">
         <img id="skymap" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossOrigin="anonymous">
         <a-mixin id="bar"
@@ -32,10 +32,11 @@
           scale-y-color="from: 10 20 50; to: 40, 140, 50; maxScale: 15"
         ></a-mixin>
       </a-assets>
-      <a-text id="statusText" value="Click to Play" position="-0.7 2.4 -3"></a-text>
+      <a-text id="instructions" value="Click search and say '<artist name or song>'" color: "#FFF" width: "3" position="-2 3.2 -4" rotation="0 0 0"></a-text>
+      <a-text id="songInfo" value="Artist - Track Title" position="-2 2.8 -4" rotation="0 0 0"></a-text>
+
       <!-- Audio analyser. -->
       <a-entity id="analyser"
-        click-to-play
         audioanalyser="src: #song"
         audioanalyser-waveform="radius: 0.5"
         rotation="90 0 0"
@@ -49,8 +50,12 @@
         ring-on-beat="analyserEl: #analyser"
         position="0 0 -7.25"
       ></a-entity>
-      <a-sphere id="leftEyeball"  position="-1 2 -6" radius="0.5" shader="flat"></a-sphere>
-      <a-sphere id="rightEyeball" position="1 2 -6" radius="0.5" shader="flat"></a-sphere>
+      <a-sphere id="leftEyeball"  position="-1 2 -6" radius="0.5" shader="flat" click-to-listen>
+        <a-text id="voiceText" value="VOICE SEARCH" position="-0.8 0.8 0"></a-text>
+      </a-sphere>
+      <a-sphere id="rightEyeball" position="1 2 -6" radius="0.5" shader="flat" click-to-play>
+        <a-text id="playText" value="PLAY SONG" position="-0.4 0.8 0"></a-text>
+      </a-sphere>
       <a-sphere id="leftEye" color="black" position="-0.81 2.17 -5.57" radius="0.1"></a-sphere>
       <a-sphere id="rightEye" color="black" position=".70 1.88 -5.64" radius="0.1"></a-sphere>
       <a-sphere id="mouth"
@@ -89,7 +94,10 @@
       <a-entity obj-model="obj: #tslogo-obj" material="color: #76a352; transparent:true" position="4 0 -5" rotation="-90 -45 0" scale="0.2 0.2 0.2" audioanalyser-volume-bind="analyserEl: #analyser; component: material; property: opacity; max: 1.0; multiplier: .01"></a-entity>
 
       <a-entity particle-system="preset: snow"></a-entity>
-
+      <a-camera>
+        <a-cursor fuse="false" color="magenta">
+        </a-cursor>
+      </a-camera>
     </a-scene>
   </body>
 </html>
