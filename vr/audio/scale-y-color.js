@@ -15,12 +15,12 @@ AFRAME.registerComponent('scale-y-color', {
     if (time - this.time < 50) { return; }
     this.time = time;
 
-    var scaleY = el.getComputedAttribute('scale').y;
+    var scaleY = el.getAttribute('scale').y;
     var percentage = scaleY / data.maxScale;
     el.setAttribute('material', 'color', '#' + rgbToHex(
-      (data.to.x - data.from.x) * percentage,
-      (data.to.y - data.from.y) * percentage,
-      (data.to.z - data.from.z) * percentage
+      data.from.x + (data.to.x - data.from.x) * percentage,
+      data.from.y + (data.to.y - data.from.y) * percentage,
+      data.from.z + (data.to.z - data.from.z) * percentage
     ));
   }
 });

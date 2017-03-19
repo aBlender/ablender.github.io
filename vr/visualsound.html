@@ -23,13 +23,13 @@
       <a-assets>
         <a-asset-item id="tslogo-obj" src="ts_logo.obj"></a-asset-item>
         <a-asset-item id="tslogo-mtl" src="ts_logo.mtl"></a-asset-item>
-        <audio id="song" loop src="CiderTime.flac" preload="auto" crossOrigin="anonymous"></audio>
+        <audio id="song" loop src="cidertime.flac" preload="auto" crossOrigin="anonymous"></audio>
         <img id="floor" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossOrigin="anonymous">
         <img id="skymap" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossOrigin="anonymous">
         <a-mixin id="bar"
-          geometry="primitive: box; width: 2; depth: 2"
-          material="color: rgb(10, 20, 50); shader: flat"
-          scale-y-color="from: 10 20 50; to: 140, 200, 255; maxScale: 15"
+          geometry="primitive: box; width: 3; depth: 3"
+          material="color: rgb(0, 0, 0); shader: flat"
+          scale-y-color="from: 22 245 140; to: 173, 42, 159; maxScale: 16"
         ></a-mixin>
       </a-assets>
 
@@ -50,14 +50,14 @@
         ring-on-beat="analyserEl: #analyser"
         position="0 0 -7.25"
       ></a-entity>
-      <a-sphere id="leftEyeball"  position="-1 2 -6" radius="0.5" shader="flat" click-to-listen>
-        <a-text id="voiceText" value="VOICE SEARCH" position="-0.8 0.8 0"></a-text>
-      </a-sphere>
-      <a-sphere id="rightEyeball" position="1 2 -6" radius="0.5" shader="flat" click-to-play>
-        <a-text id="playText" value="PLAY SONG" position="-0.4 0.8 0"></a-text>
-      </a-sphere>
-      <a-sphere id="leftEye" color="black" position="-0.81 2.17 -5.57" radius="0.1"></a-sphere>
-      <a-sphere id="rightEye" color="black" position=".70 1.88 -5.64" radius="0.1"></a-sphere>
+      <a-cylinder id="leftEyeball" class="clickable" position="-1 2 -6" rotation="90 0 0" height="0.5" radius="0.5" shader="flat" click-to-listen>
+        <a-text id="voiceText" value="VOICE SEARCH" position="-0.8 0 -0.80" rotation="-90 0 0"></a-text>
+      </a-cylinder>
+      <a-cylinder id="rightEyeball" class="clickable" position="1 2 -6" rotation="90 0 0" height="0.5" radius="0.5" shader="flat" click-to-play>
+        <a-text id="playText" value="PLAY SONG" position="-0.4 0 -0.8" rotation="-90 0 0"></a-text>
+      </a-cylinder>
+      <a-cylinder id="leftEye" color="black" position="-0.81 2.17 -5.77" rotation="90 0 0" height="0.2" radius="0.1"></a-cylinder>
+      <a-cylinder id="rightEye" color="black" position=".70 1.88 -5.84" rotation="90 0 0" height="0.2" radius="0.1"></a-cylinder>
       <a-sphere id="mouth"
         color="#000"
         audioanalyser-volume-scale="analyserEl: #analyser; multiplier: .004"
@@ -68,10 +68,11 @@
 
       <!-- Spectrum visualization. -->
       <a-entity
+        position="0 6 0"
         audioanalyser-levels-scale="analyserEl: #analyser; max: 50; multiplier: 0.06"
-        entity-generator="mixin: bar; num: 64"
-        layout="type: circle; radius: 16"
-        rotation="0 180 0"
+        entity-generator="mixin: bar; num: 96"
+        layout="type: circle; radius: 32"
+        rotation="-15 180 0"
       ></a-entity>
 
       <!-- Lights, sky, ground. -->
@@ -81,12 +82,13 @@
         position="1 2 -1"
         type="point"
       ></a-light>
+      <a-sky color="black"></a-sky>
       <a-entity id="sky"
         geometry="primitive: sphere; radius: 500; phiLength: 360; phiStart: 0; thetaLength: 90"
         material="shader: flat; side: back; height: 2048; src: #skymap; width: 2048"
       ></a-entity>
       <a-entity id="ground"
-        geometry="primitive: circle; radius: 30.5"
+        geometry="primitive: circle; radius: 60.5"
         rotation="-90 0 0"
         material="src: #floor; shader: flat"
       ></a-entity>
@@ -95,7 +97,11 @@
 
       <!-- <a-entity particle-system="preset: snow"></a-entity> -->
       <a-camera>
-        <a-cursor fuse="false" color="magenta">
+        <a-cursor fuse="false" color="yellow" geometry="radiusInner: 0.01; radiusOuter: 0.02" raycaster="far: 20; interval: 1000; objects: .clickable">
+          <a-ring material="color: goldenrod; shader: flat; opacity: 0.8" position="0 0 -0.005" geometry="radiusInner: 0.01; radiusOuter: 0.02"></a-ring>
+          <a-animation begin="click" direction="alternate" repeat="1" dur="200" attribute="scale" from="1 1 1" to="0.5 0.5 0.5"></a-animation>
+          <a-animation begin="cursor-fusing" delay="500" dur="1000" attribute="geometry.thetaStart" from="0" to="360"></a-animation>
+          <a-animation begin="cursor-fusing" delay="500" dur="1000" attribute="geometry.thetaLength" from="0" to="360"></a-animation>
         </a-cursor>
       </a-camera>
     </a-scene>

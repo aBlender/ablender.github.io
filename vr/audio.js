@@ -65,8 +65,17 @@ AFRAME.registerComponent('click-to-listen',{
       audioEl.src = "trash80.mp3";
       textEl.setAttribute("value", "Trash80 - Sidk Fnck");
     }else if(query == "cider time"){
-      audioEl.src = "CiderTime.flac";
+      audioEl.src = "cidertime.flac";
       textEl.setAttribute("value", "Lifeformed - Cider Time");
+    }else if(query == "9 bit Expedition"){
+      audioEl.src = "9bitexpedition.flac";
+      textEl.setAttribute("value", "Lifeformed - 9-Bit Expedition");
+    }else if(query == "summer vibe"){
+      audioEl.src = "summervibe.mp3";
+      textEl.setAttribute("value", "Walk Off The Earth - Summer Vibe");
+    }else if(query == "Party Rock Anthem"){
+      audioEl.src = "partyrockanthem.mp3";
+      textEl.setAttribute("value", "Walk Off The Earth - Party Rock Anthem");
     }else{
       Spotify.searchTracks(query).then(function (results) {
         var track = results.tracks.items[0];
