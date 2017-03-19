@@ -65,7 +65,7 @@ AFRAME.registerComponent('click-to-listen',{
       audioEl.src = "trash80.mp3";
       textEl.setAttribute("value", "Trash80 - Sidk Fnck");
     }else if(query == "cider time"){
-      audioEl.src = "cidertime.flac";
+      audioEl.src = "CiderTime.flac";
       textEl.setAttribute("value", "Lifeformed - Cider Time");
     }else if(query == "9 bit Expedition"){
       audioEl.src = "9bitexpedition.flac";
