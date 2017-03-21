@@ -2,29 +2,51 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>House! - Starter Code</title>
+  <title>Haunted House!!</title>
   <meta name="description" content="Hello, World! - A-Frame">
   <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
   <script src="randomizer.js"></script>
   <script src="index.js"></script>
+  <script src="haunted.js"></script>
 </head>
 <body>
-  <a-scene fog="type: linear; color: cyan; far: 60; near: 0">
-  <a-assets>
-    <a-asset-item id="house-obj" src="house.obj"></a-asset-item>
-    <a-asset-item id="house-mtl" src="house.mtl"></a-asset-item>
-    <a-asset-item id="carloshead-obj" src="carlosbust.obj"></a-asset-item>
-    <a-asset-item id="carloshead-mtl" src="carlosbust.mtl"></a-asset-item>
-    <a-asset-item id="texturedpillar-obj" src="pillarc.obj"></a-asset-item>
-    <a-asset-item id="texturedpillar-mtl" src="pillarc.mtl"></a-asset-item>
-  </a-assets>
-  <a-sky color="cyan"></a-sky>
-  <a-entity obj-model="obj: #house-obj; mtl: #house-mtl" position="8 -8 -5" rotation="-90 0 0" scale="0.25 0.25 0.25"></a-entity>
-  <a-entity obj-model="obj: #carloshead-obj; mtl: #carloshead-mtl" position="-12 -6 -8" rotation="-90 45 0" scale="0.2 0.2 0.2"></a-entity>
-  <a-entity obj-model="obj: #texturedpillar-obj; mtl: #texturedpillar-mtl" position="-10 -6 -4" rotation="0 45 0"></a-entity>
-  <a-camera position="-7 1.6 3" wasd-controls="fly: true" look-controls>
-    <!-- <a-animation attribute="position" to="-3 1.5 -10" direction="alternate" dur="6000" repeat="indefinite"></a-animation> -->
-  </a-camera>
-</a-scene>
+    <a-scene fog="type: linear; color: darkslategrey; far: 60; near: 0">
+      <a-assets>
+        <a-asset-item id="house-obj" src="house.obj"></a-asset-item>
+        <a-asset-item id="house-mtl" src="house.mtl"></a-asset-item>
+        <a-asset-item id="carloshead-obj" src="carlosbustcentered.obj"></a-asset-item>
+        <a-asset-item id="carloshead-mtl" src="carlosbustcentered.mtl"></a-asset-item>
+        <a-asset-item id="texturedpillar-obj" src="pillarc.obj"></a-asset-item>
+        <a-asset-item id="boo-obj" src="boo_005.obj"></a-asset-item>
+        <!-- <a-asset-item id="texturedpillar-mtl" src="pillarc.mtl"></a-asset-item> -->
+        <img id="pillar-texture" src="ao_blue.png">
+        <img id="boo-texture" src="ao_booWhole_c1.png">
+      </a-assets>
+      <a-light id="ambient-light" type="ambient" color="#BBB" intensity="0.6"></a-entity>
+      <a-light type="directional" color="#FFF" intensity="0.3" position="-0.5 1 1"></a-entity>
+      <a-sky color="cyan"></a-sky>
+      <a-entity obj-model="obj: #house-obj; mtl: #house-mtl" position="8 -8 -5" rotation="-90 0 0" scale="0.25 0.25 0.25"></a-entity>
+      <a-entity id="carlos" obj-model="obj: #carloshead-obj; mtl: #carloshead-mtl" position="-8 -6 -12" rotation="-90 45 0" scale="0.2 0.2 0.2" light-fx>
+        <a-animation attribute="rotation" to="-90 0 0" direction="alternate" dur="1400" repeat="1" begin="mouseenter"></a-animation>
+        <a-animation attribute="position" to="-5 -6 -8" direction="alternate" dur="1400" repeat="1" begin="mouseenter"></a-animation>
+      </a-entity>
+      <a-entity obj-model="obj: #texturedpillar-obj" position="-10 -6 -4" rotation="0 45 0" material="src: #pillar-texture; color: darkgrey; opacity:1">
+        <a-animation attribute="rotation" to="0 405 0" direction="alternate" dur="4000" repeat="0" begin="mouseenter"></a-animation>
+        <a-animation attribute="position" to="0 0 -6" direction="alternate" dur="2000" repeat="1" begin="mouseenter"></a-animation>
+        <a-animation attribute="material.opacity" from="1" to="0.5" direction="alternate" dur="400" repeat="9" begin="mouseenter"></a-animation>
+      </a-entity>
+      <a-entity obj-model="obj: #boo-obj" position="8 -2 -10" rotation="0 -30 0" material="src: #boo-texture">
+        <a-animation attribute="rotation" to="0 660 0" direction="alternate" dur="4000" begin="mouseenter"></a-animation>
+        <a-animation attribute="position" to="2 -2 0" direction="alternate" dur="4000" begin="mouseenter"></a-animation>
+        <a-animation attribute="material.opacity" from="1" to="0.5" direction="alternate" dur="400" repeat="9" begin="mouseenter"></a-animation>
+      </a-entity>
+      <a-entity obj-model="obj: #boo-obj" position="20 4 2" rotation="0 -90 0" material="src: #boo-texture" boo-fx></a-entity>
+      <a-entity obj-model="obj: #boo-obj" position="0 -2 -20" rotation="0 0 0" material="src: #boo-texture" boo-fx></a-entity>
+      <a-light id="carlos-light" angle="20" position="6 6 0" type="spot" target="#carlos" intensity="0.1"></a-light>
+      <a-camera position="-7 1 3" wasd-controls="fly: true" look-controls>
+        <a-cursor opacity="0.5"></a-cursor>
+      </a-camera>
+    </a-scene>
 </body>
+<style>
 </html>
