@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Schematic Example!!</title>
+  <meta name="description" content="Hello, World! - A-Frame">
+  <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+  <script src="schematic.js"></script>
+</head>
+<body>
+    <a-scene>
+      <!-- <a-assets>
+        <img id=cobblestone src="cobblestone.png">
+        <img id=glowstone src="glowstone.png">
+        <img id=oak src="planks_oak.png">
+        <img id=spruce src="planks_spruce.png">
+        <img id=sandstone src="sandstone_top.png">
+      </a-assets> -->
+      <a-sky color="skyblue"></a-sky>
+      <a-box color="green" scale="64 1 64"></a-box>
+      <a-box color="red" position="1 1 -2"></a-box>
+      <a-box color="blue" position = "-1 1 -2"></a-box>
+      <a-entity id="dojo" dojo-schematic position="14 1 -16"></a-entity>
+      <a-camera position="0 1.6 2" rotation="0 -30 0" wasd-controls="fly: true"></a-camera>
+    </a-scene>
+</body>
+</html>
