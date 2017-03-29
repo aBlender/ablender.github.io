@@ -13,8 +13,8 @@ AFRAME.registerComponent('dojo-schematic', {
           var voxel = document.createElement("a-box");
           var dojoEl = document.querySelector("#dojo");
           var name = thing.name;
-          voxel.setAttribute("color", getColorFromName(name));
-          //voxel.setAttribute("material", "src", getTextureIdFromName(name)); //disabled to improve performance on mobile
+          //voxel.setAttribute("color", getColorFromName(name));
+          voxel.setAttribute("material", "src", getTextureIdFromName(name)); //disabled to improve performance on mobile
           voxel.setAttribute("material", "shader", "flat");
           voxel.setAttribute("position", x + " " + y + " " + z);
           dojoEl.appendChild(voxel);
