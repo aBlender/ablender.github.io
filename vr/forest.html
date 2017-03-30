@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VR Forest!</title>
+  <meta name="description" content="Hello, World! - A-Frame">
+  <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+</head>
+<body>
+  <a-scene fog="type: linear; color: #32445C; far: 100; near: 0" antialias="false">
+    <a-assets>
+      <a-asset-item id="forest-obj" src="forest.obj"></a-asset-item>
+      <a-asset-item id="forest-mtl" src="forest.mtl"></a-asset-item>
+      <a-asset-item id="can-obj" src="can.obj"></a-asset-item>
+      <img id="can-texture" src="lacroix_can2.jpg">
+    </a-assets>
+    <a-sky color="skyblue"></a-sky>
+    <a-entity obj-model="obj: #forest-obj; mtl: #forest-mtl" position="8 -2 -5" rotation="-90 0 0" scale="1 1 1"></a-entity>
+    <a-entity obj-model="obj: #can-obj" position="-6.5 1.1 -14" rotation="0 -100 90" material="src: #can-texture; metalness: 0.5;" scale="0.02 0.02 0.02">
+      <a-animation attribute="rotation" from="0 -100 90" to="400 -70 90" direction="alternate" dur="5000" begin="click" easing="ease-out-cubic"></a-animation>
+      <a-animation attribute="position" from="-6.5 1.1 -14" to="-10.6 1.1 -14.3" direction="alternate" dur="5000" begin="click" easing="ease-out-cubic"></a-animation>
+    </a-entity>
+    <a-light type="directional" color="#AAAAFF" intensity="0.6" position="-0.5 1 1"></a-light>
+    <a-light type="ambient" color="#BBB" intensity="0.6"></a-light>
+    <a-light type="point" color="orange" position="-8 1.6 -12" distance="8">
+      <a-animation attribute="intensity" from="0.75" to="1.5" direction="alternate" dur="950" repeat="indefinite"></a-animation>
+    </a-light>
+    <a-light type="point" color="yellow" position="-8 1.6 -12" distance="8">
+      <a-animation attribute="intensity" from="0.5" to="1" direction="alternate" dur="2100" repeat="indefinite"></a-animation>
+    </a-light>
+    <a-light type="point" color="red" position="-8 1.6 -12" distance="8">
+      <a-animation attribute="intensity" from="0.5" to="1" direction="alternate" dur="230" repeat="indefinite"></a-animation>
+    </a-light>
+    <!-- <a-box color="blue" position="0 2 -5"></a-box>
+    <a-sphere color="magenta" position="-2 2 -6"></a-sphere> -->
+    <a-sphere color="#BB00FF" position="-13 3 -8" rotation="0 120 0">
+      <a-animation attribute="rotation" to="0 180 0" direction="alternate" dur="1000" repeat="1" begin="mouseenter"></a-animation>
+        <a-sphere color="white" position="-0.4 0.4 0.9" scale="0.3 0.3 0.3">
+          <a-sphere color="black" position="0 0 1" scale="0.2 0.2 0.2"></a-sphere>
+        </a-sphere>
+        <a-sphere color="white" position="0.4 0.4 0.9" scale="0.3 0.3 0.3">
+          <a-sphere color="black" position="0 0 1" scale="0.2 0.2 0.2"></a-sphere>
+        </a-sphere>
+    </a-sphere>
+    <a-camera position="-13 1.6 -16" rotation="0 -145 0" wasd-controls="fly: false">
+      <a-cursor></a-cursor>
+    </a-camera>
+  </a-scene>
+</body>
+</html>
