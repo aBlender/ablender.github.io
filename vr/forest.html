@@ -17,7 +17,7 @@
     </a-assets>
     <a-sky color="skyblue"></a-sky>
     <a-entity obj-model="obj: #forest-obj; mtl: #forest-mtl" position="8 -2 -5" rotation="-90 0 0" scale="1 1 1"></a-entity>
-    <a-entity obj-model="obj: #can-obj" position="-6.5 1.1 -14" rotation="0 -100 90" material="src: #can-texture; metalness: 0.5;" scale="0.02 0.02 0.02">
+    <a-entity id="can" obj-model="obj: #can-obj" position="-6.5 1.1 -14" rotation="0 -100 90" material="src: #can-texture; metalness: 0.5;" scale="0.02 0.02 0.02">
       <a-animation attribute="rotation" from="0 -100 90" to="400 -70 90" direction="alternate" dur="5000" begin="click" easing="ease-out-cubic"></a-animation>
       <a-animation attribute="position" from="-6.5 1.1 -14" to="-10.6 1.1 -14.3" direction="alternate" dur="5000" begin="click" easing="ease-out-cubic"></a-animation>
     </a-entity>
@@ -43,7 +43,7 @@
           <a-sphere color="black" position="0 0 1" scale="0.2 0.2 0.2"></a-sphere>
         </a-sphere>
     </a-sphere>
-    <a-sphere color="#BBFF00" position="-10 2.6 -8" rotation="0 120 0" follow="target: #can-obj; speed: 1.5; faceTarget: true" scale="0.3 0.3 0.3">
+    <a-sphere color="#BBFF00" position="-10 2.6 -8" rotation="0 120 0" follow="target: #can; speed: 1.5; faceTarget: true" scale="0.3 0.3 0.3">
       <!-- <a-animation attribute="rotation" to="0 180 0" direction="alternate" dur="1000" repeat="1" begin="mouseenter"></a-animation> -->
         <a-sphere color="white" position="-0.3 0.4 0.9" scale="0.3 0.3 0.3">
           <a-sphere color="black" position="0 0.3 1" scale="0.2 0.2 0.2"></a-sphere>
