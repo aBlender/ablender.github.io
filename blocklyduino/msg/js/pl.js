@@ -841,6 +841,7 @@ Blockly.Msg.RGBLED_SHOW_TOOLTIP = "This sends the updated pixel color to the har
 Blockly.Msg.RGBLED_WARNING = "Need to Begin Block.";  // untranslated
 Blockly.Msg.RIGHT = "Right";  // untranslated
 Blockly.Msg.RISING = "Rising";  // untranslated
+Blockly.Msg.ROKIT_FUNCTIONS_HELPURL = "http://www.robolink.com/smart-inventor-functions-guide/";  // untranslated
 Blockly.Msg.ROW = "Row";  // untranslated
 Blockly.Msg.SAVE_XML = "Save XML";  // untranslated
 Blockly.Msg.SERIAL_AVAILABLE_APPENDTEXT = "Serial Available";  // untranslated

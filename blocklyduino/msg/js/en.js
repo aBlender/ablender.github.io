@@ -841,6 +841,7 @@ Blockly.Msg.RGBLED_SHOW_TOOLTIP = "This sends the updated pixel color to the har
 Blockly.Msg.RGBLED_WARNING = "Need to Begin Block.";
 Blockly.Msg.RIGHT = "Right";
 Blockly.Msg.RISING = "Rising";
+Blockly.Msg.ROKIT_FUNCTIONS_HELPURL = "http://www.robolink.com/smart-inventor-functions-guide/";
 Blockly.Msg.ROW = "Row";
 Blockly.Msg.SAVE_XML = "Save XML";
 Blockly.Msg.SERIAL_AVAILABLE_APPENDTEXT = "Serial Available";

@@ -841,6 +841,7 @@ Blockly.Msg.RGBLED_SHOW_TOOLTIP = "色の設定をLEDに送ります。";
 Blockly.Msg.RGBLED_WARNING = "初期化ブロックが必要です。";
 Blockly.Msg.RIGHT = "右";
 Blockly.Msg.RISING = "Rising";
+Blockly.Msg.ROKIT_FUNCTIONS_HELPURL = "http://www.robolink.com/smart-inventor-functions-guide/";  // untranslated
 Blockly.Msg.ROW = "列";
 Blockly.Msg.SAVE_XML = "データの保存";
 Blockly.Msg.SERIAL_AVAILABLE_APPENDTEXT = "シリアルデータの確認";

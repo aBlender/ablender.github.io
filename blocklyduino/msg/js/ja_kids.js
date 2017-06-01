@@ -841,6 +841,7 @@ Blockly.Msg.RGBLED_SHOW_TOOLTIP = "ひかりをつけます。";
 Blockly.Msg.RGBLED_WARNING = "しょきかブロックがひつようです。";
 Blockly.Msg.RIGHT = "みぎ";
 Blockly.Msg.RISING = "スイッチがオフからオン";
+Blockly.Msg.ROKIT_FUNCTIONS_HELPURL = "http://www.robolink.com/smart-inventor-functions-guide/";  // untranslated
 Blockly.Msg.ROW = "れつ";
 Blockly.Msg.SAVE_XML = "データのほぞん";
 Blockly.Msg.SERIAL_AVAILABLE_APPENDTEXT = "もじはとどいたか、かくにんする";

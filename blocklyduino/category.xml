@@ -555,6 +555,14 @@
                 </block>
             </value>
         </block>
+        <block type="rokit_buzz"></block>
+        <block type="rokit_buzz_custom">
+            <value name="FREQ">
+                <block type="math_number">
+                    <field name="NUM">262</field>
+                </block>
+            </value>
+        </block>
     </category>
 </category>
 <category id="category_robot">
