@@ -563,6 +563,9 @@
                 </block>
             </value>
         </block>
+        <block type="rokit_remote_enable"></block>
+        <block type="rokit_remote_disable"></block>
+        <block type="rokit_remote_key_pressed"></block>
     </category>
 </category>
 <category id="category_robot">
