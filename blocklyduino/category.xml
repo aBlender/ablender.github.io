@@ -40,6 +40,8 @@
                 </block>
             </value>
         </block>
+        <block type="capsense_begin"></block>
+        <block type="capsense_read"></block>
     </category>
 </category>
 <category id="category_serial">
