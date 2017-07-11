@@ -42,4 +42,3 @@ AFRAME.registerComponent('follow', {
     }
   }
 });
-d
