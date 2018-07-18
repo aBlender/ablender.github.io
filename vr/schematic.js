@@ -1,6 +1,6 @@
 AFRAME.registerComponent('dojo-schematic', {
   init: function(){
-    fetch('https://mod.learntomod.com/schematics/aBlender-dojo.json').then(function(response){
+    fetch('http://mod.learntomod.com/schematics/aBlender-dojo.json').then(function(response){
       return response.json();
     }).then(function(j){
         for(var i in j){
