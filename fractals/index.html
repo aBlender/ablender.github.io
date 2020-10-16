@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><script>
+//<![CDATA[
+function preloadSupported() {
+  var relList = document.createElement('link').relList;
+  return !!(relList && relList.supports && relList.supports('preload'));
+}
+//]]>
+</script><script async="" src="/js/modernizr-custom.js"></script><link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome-brands.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome-solid.min.css" /></head><body><script src="/js/jquery-3.4.1.min.js"></script><script async="" src="/js/moment.min.js"></script><script>
+//<![CDATA[
+   function replaceAllText(root, find, replace) {
+
+       var walker = document.createTreeWalker(
+           root,
+           NodeFilter.SHOW_ALL,  // filtering only text nodes
+           null,
+           false
+       );
+
+       while (walker.nextNode()) {
+           var c = walker.currentNode
+           if(c.id){
+             c.id = c.id.replace(find, replace)
+           }
+           if(c.getAttribute && c.getAttribute('onclick')){
+             c.setAttribute('onclick', c.getAttribute('onclick').replace(find, replace))
+           }
+           if(c.tagName == "SCRIPT"){
+             c.textContent = c.textContent.replace(find, replace)
+           }
+
+           if(c.tagName == "TEMPLATE"){
+             var content = c.content
+             console.log(content)
+             replaceAllText(content, find, replace)
+           }
+       }
+   }
+
+function newNamespaceKeeping(old){
+   var cache = {}
+   return function(ns){
+     if(!cache[ns] && ns != old){
+       //Keep a cache.  And avoid changing the oldNamespace...
+       window.namespace_num = window.namespace_num || 0
+       window.namespace_num += 1
+       var freshNamespace = ns + "0000" + window.namespace_num
+       cache[ns] = freshNamespace
+     }
+
+     return cache[ns] || ns;
+   }
+}
+
+function getNamespace(component){
+  return component.innerHTML.match(/ns\d+/)[0]
+}
+
+function injectComponent(template, target, oldNamespace){
+       console.log([template, target, oldNamespace])
+       var actualTemplate = null;
+       if(typeof(template) == "string")
+           actualTemplate = document.getElementById(template);
+       else
+           actualTemplate = template;
+
+       var s = actualTemplate.innerHTML
+
+       var content = actualTemplate.content
+       var clonedContent = document.importNode(content, true)
+       replaceAllText(clonedContent, /ns\d+/g, newNamespaceKeeping(oldNamespace))
+
+       document.getElementById(target).appendChild(clonedContent)
+
+       window.injected = document.getElementById(target).lastChild
+       if (actualTemplate.afterInject)
+          actualTemplate.afterInject(window.injected)
+}
+//]]>
+</script><script async="" src="/js/p5.min.js"></script><div id="ns2504058_main" class="p-5 card bg-transparent mb-0 text-center" style="height:300;" data-ns="ns2504058"><div class="card border-dark col-4 mx-auto" class="border-dark col-4 mx-auto"><div class="card-body"><h4>Dragon Curve</h4></div></div><style>
+#ns2504058_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+ var ns2504058_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns2504058_isMobile.Android() || ns2504058_isMobile.BlackBerry() || ns2504058_isMobile.iOS() || ns2504058_isMobile.Opera() || ns2504058_isMobile.Windows());
+            }
+        };
+ var ns2504058_sketch = function(p){
+  // TURTLE STUFF:
+  let x, y; // the current position of the turtle
+  let currentangle = -150; // which way the turtle is pointing
+  let step = 18; // how much the turtle moves with each 'F'
+  let angle = 90; // how much the turtle turns with a '-' or '+'
+
+  // LINDENMAYER STUFF (L-SYSTEMS)
+  let thestring = 'FX'; // "axiom" or start of the string
+  let numloops = 16; // how many iterations to pre-compute
+  let therules = [['X', 'X+YF+'],['Y', '-FX-Y']]; // array for rules
+
+  let whereinstring = 0; // where in the L-system are we?
+
+  p.setup = function() {
+   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns2504058_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns2504058_canvas');
+   //canvas.style('display','block');
+   canvas.parent("ns2504058_main");
+
+   p.background('#343a40');
+   p.stroke('rgba(0,255,128,0.4)');
+
+   // start the x and y position at lower-left corner
+   x = 240;
+   y = p.height/3*2;
+
+   // COMPUTE THE L-SYSTEM
+   for (let i = 0; i < numloops; i++) {
+    thestring = lindenmayer(thestring);
+   }
+  }
+
+  p.draw = function() {
+
+   // draw the current character in the string:
+   drawIt(thestring[whereinstring]);
+
+   // increment the point for where we're reading the string.
+   // wrap around at the end.
+   whereinstring++;
+   if (whereinstring > thestring.length-1) whereinstring = 0;
+
+  }
+
+  // interpret an L-system
+  function lindenmayer(s) {
+   let outputstring = ''; // start a blank output string
+
+   // iterate through 'therules' looking for symbol matches:
+   for (let i = 0; i < s.length; i++) {
+    let ismatch = 0; // by default, no match
+    for (let j = 0; j < therules.length; j++) {
+     if (s[i] == therules[j][0])  {
+      outputstring += therules[j][1]; // write substitution
+      ismatch = 1; // we have a match, so don't copy over symbol
+      break; // get outta this for() loop
+     }
+    }
+    // if nothing matches, just copy the symbol over.
+    if (ismatch == 0) outputstring+= s[i];
+   }
+
+   return outputstring; // send out the modified string
+  }
+
+  // this is a custom function that draws turtle commands
+  function drawIt(k) {
+
+   if (k=='F') { // draw forward
+    // polar to cartesian based on step and currentangle:
+    let x1 = x + step*p.cos(p.radians(currentangle));
+    let y1 = y + step*p.sin(p.radians(currentangle));
+    p.line(x, y, x1, y1); // connect the old and the new
+
+    // update the turtle's position:
+    x = x1;
+    y = y1;
+    } else if (k == '+') {
+    currentangle += angle; // turn left
+    } else if (k == '-') {
+    currentangle -= angle; // turn right
+   }
+
+   // give me some random color values:
+   let r = p.random(128, 255);
+   let g = p.random(0, 192);
+   let b = p.random(0, 50);
+   let a = p.random(10, 24);
+
+   // pick a gaussian (D&D) distribution for the radius:
+   let radius = 0;
+   radius += p.random(0, 0);
+   radius += p.random(0, 0);
+   radius += p.random(0, 0);
+   radius = radius / 3;
+
+   // draw the stuff:
+   p.fill(r, g, b, a);
+   p.ellipse(x, y, radius, radius);
+  }
+  p.windowResized = function() {
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns2504058_main");
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+   p.background('#343a40');
+   x = 240;
+   y = p.height/3*2;
+   currentangle = -150;
+   whereinstring = 0;
+   };
+  };
+window.onload = function(){
+ if (ns2504058_isMobile.any()){
+  var parent = document.getElementById("ns2504058_main");
+  parent.classList.remove('bg-transparent');
+  parent.style.backgroundColor = '#343a40';
+ }
+ else {
+  var myp5 = new p5(ns2504058_sketch,'ns2504058_canvas');
+ }
+}
+//]]>
+</script><div id="ns2504059_main" class="p-5 card bg-transparent text-center" style="overflow:hidden;height:300;" data-ns="ns2504059"><div class="card border-dark col-6 mx-auto" class="border-dark col-6 mx-auto"><div class="card-body"><h4>Sierpinksi Triangle with Arrowhead Curves</h4></div></div><style>
+#ns2504059_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+ var ns2504059_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns2504059_isMobile.Android() || ns2504059_isMobile.BlackBerry() || ns2504059_isMobile.iOS() || ns2504059_isMobile.Opera() || ns2504059_isMobile.Windows());
+            }
+        };
+ var ns2504059_sketch = function(p){
+  // TURTLE STUFF:
+  let x, y; // the current position of the turtle
+  let currentangle = 0; // which way the turtle is pointing
+  let step = 16; // how much the turtle moves with each 'F'
+  let angle = -60; // how much the turtle turns with a '-' or '+'
+
+  // LINDENMAYER STUFF (L-SYSTEMS)
+  let thestring = 'A'; // "axiom" or start of the string
+  let numloops = 4; // how many iterations to pre-compute
+  let therules = [['A', 'BF-AF-B'],['B', 'AF+BF+A']]; // array for rules
+
+  let whereinstring = 0; // where in the L-system are we?
+
+  p.setup = function() {
+   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns2504059_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns2504059_canvas');
+   //canvas.style('display','block');
+   canvas.parent("ns2504059_main");
+
+   p.background('#e9ecef');
+   p.stroke('rgba(100,100,100,0.2)');
+
+   // start the x and y position at lower-left corner
+   x = 0;
+   y = p.height-1;
+
+   // COMPUTE THE L-SYSTEM
+   for (let i = 0; i < numloops; i++) {
+    thestring = lindenmayer(thestring);
+   }
+  }
+
+  p.draw = function() {
+
+   // draw the current character in the string:
+   drawIt(thestring[whereinstring]);
+
+   // increment the point for where we're reading the string.
+   // wrap around at the end.
+   whereinstring++;
+   if (whereinstring > thestring.length-1) whereinstring = 0;
+
+  }
+
+  // interpret an L-system
+  function lindenmayer(s) {
+   let outputstring = ''; // start a blank output string
+
+   // iterate through 'therules' looking for symbol matches:
+   for (let i = 0; i < s.length; i++) {
+    let ismatch = 0; // by default, no match
+    for (let j = 0; j < therules.length; j++) {
+     if (s[i] == therules[j][0])  {
+      outputstring += therules[j][1]; // write substitution
+      ismatch = 1; // we have a match, so don't copy over symbol
+      break; // get outta this for() loop
+     }
+    }
+    // if nothing matches, just copy the symbol over.
+    if (ismatch == 0) outputstring+= s[i];
+   }
+
+   return outputstring; // send out the modified string
+  }
+
+  // this is a custom function that draws turtle commands
+  function drawIt(k) {
+
+   if (k=='F') { // draw forward
+    // polar to cartesian based on step and currentangle:
+    let x1 = x + step*p.cos(p.radians(currentangle));
+    let y1 = y + step*p.sin(p.radians(currentangle));
+    p.line(x, y, x1, y1); // connect the old and the new
+
+    // update the turtle's position:
+    x = x1;
+    y = y1;
+    } else if (k == '+') {
+    currentangle += angle; // turn left
+    } else if (k == '-') {
+    currentangle -= angle; // turn right
+   }
+
+   // give me some random color values:
+   let r = p.random(128, 255);
+   let g = p.random(0, 192);
+   let b = p.random(0, 50);
+   let a = p.random(10, 24);
+
+   // pick a gaussian (D&D) distribution for the radius:
+   let radius = 0;
+   radius += p.random(0, 15);
+   radius += p.random(0, 15);
+   radius += p.random(0, 15);
+   radius = radius / 3;
+
+   // draw the stuff:
+   p.fill(r, g, b, a);
+   p.ellipse(x, y, radius, radius);
+  }
+  p.windowResized = function() {
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns2504059_main");
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+   p.background('#e9ecef');
+   x = 0;
+   y = p.height-1;
+   currentangle = 0;
+   whereinstring = 0;
+   };
+  };
+window.onload = function(){
+ if (ns2504059_isMobile.any()){
+  var parent = document.getElementById("ns2504059_main");
+  parent.classList.remove('bg-transparent');
+  parent.style.backgroundColor = '#e9ecef';
+ }
+ else {
+  var myp5 = new p5(ns2504059_sketch,'ns2504059_canvas');
+ }
+}
+//]]>
+</script><div id="ns2504060_main" class="p-5 card bg-transparent text-center" style="overflow:hidden;height:300;" data-ns="ns2504060"><div class="card border-dark col-4 mx-auto" class="border-dark col-4 mx-auto"><div class="card-body"><h4>Koch Curve</h4></div></div><style>
+#ns2504060_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+ var ns2504060_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns2504060_isMobile.Android() || ns2504060_isMobile.BlackBerry() || ns2504060_isMobile.iOS() || ns2504060_isMobile.Opera() || ns2504060_isMobile.Windows());
+            }
+        };
+ var ns2504060_sketch = function(p){
+  // TURTLE STUFF:
+  let x, y; // the current position of the turtle
+  let currentangle = 0; // which way the turtle is pointing
+  let step = 20; // how much the turtle moves with each 'F'
+  let angle = -90; // how much the turtle turns with a '-' or '+'
+
+  // LINDENMAYER STUFF (L-SYSTEMS)
+  let thestring = 'F'; // "axiom" or start of the string
+  let numloops = 3; // how many iterations to pre-compute
+  let therules = [['F', 'F+F-F-F+F']]; // array for rules
+
+  let whereinstring = 0; // where in the L-system are we?
+
+  p.setup = function() {
+   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns2504060_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns2504060_canvas');
+   //canvas.style('display','block');
+   canvas.parent("ns2504060_main");
+
+   p.background('white');
+   p.stroke('rgba(100,100,100,0.4)');
+
+   // start the x and y position at lower-left corner
+   x = 0;
+   y = p.height-1;
+
+   // COMPUTE THE L-SYSTEM
+   for (let i = 0; i < numloops; i++) {
+    thestring = lindenmayer(thestring);
+   }
+  }
+
+  p.draw = function() {
+
+   // draw the current character in the string:
+   drawIt(thestring[whereinstring]);
+
+   // increment the point for where we're reading the string.
+   // wrap around at the end.
+   whereinstring++;
+   if (whereinstring > thestring.length-1) whereinstring = 0;
+
+  }
+
+  // interpret an L-system
+  function lindenmayer(s) {
+   let outputstring = ''; // start a blank output string
+
+   // iterate through 'therules' looking for symbol matches:
+   for (let i = 0; i < s.length; i++) {
+    let ismatch = 0; // by default, no match
+    for (let j = 0; j < therules.length; j++) {
+     if (s[i] == therules[j][0])  {
+      outputstring += therules[j][1]; // write substitution
+      ismatch = 1; // we have a match, so don't copy over symbol
+      break; // get outta this for() loop
+     }
+    }
+    // if nothing matches, just copy the symbol over.
+    if (ismatch == 0) outputstring+= s[i];
+   }
+
+   return outputstring; // send out the modified string
+  }
+
+  // this is a custom function that draws turtle commands
+  function drawIt(k) {
+
+   if (k=='F') { // draw forward
+    // polar to cartesian based on step and currentangle:
+    let x1 = x + step*p.cos(p.radians(currentangle));
+    let y1 = y + step*p.sin(p.radians(currentangle));
+    p.line(x, y, x1, y1); // connect the old and the new
+
+    // update the turtle's position:
+    x = x1;
+    y = y1;
+    } else if (k == '+') {
+    currentangle += angle; // turn left
+    } else if (k == '-') {
+    currentangle -= angle; // turn right
+   }
+
+   // give me some random color values:
+   let r = p.random(128, 255);
+   let g = p.random(0, 192);
+   let b = p.random(0, 50);
+   let a = p.random(10, 24);
+
+   // pick a gaussian (D&D) distribution for the radius:
+   let radius = 0;
+   radius += p.random(0, 0);
+   radius += p.random(0, 0);
+   radius += p.random(0, 0);
+   radius = radius / 3;
+
+   // draw the stuff:
+   p.fill(r, g, b, a);
+   p.ellipse(x, y, radius, radius);
+  }
+  p.windowResized = function() {
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns2504060_main");
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+   p.background('white');
+   x = 0;
+   y = p.height-1;
+   currentangle = 0;
+   whereinstring = 0;
+   };
+  };
+window.onload = function(){
+ if (ns2504060_isMobile.any()){
+  var parent = document.getElementById("ns2504060_main");
+  parent.classList.remove('bg-transparent');
+  parent.style.backgroundColor = 'white';
+ }
+ else {
+  var myp5 = new p5(ns2504060_sketch,'ns2504060_canvas');
+ }
+}
+//]]>
+</script><script src="/js/bootstrap.bundle.min.js"></script><script>
+//<![CDATA[
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+//]]>
+</script></body></html>
