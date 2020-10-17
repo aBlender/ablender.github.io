@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><script>
+//<![CDATA[
+function preloadSupported() {
+  var relList = document.createElement('link').relList;
+  return !!(relList && relList.supports && relList.supports('preload'));
+}
+//]]>
+</script><script async="" src="/js/modernizr-custom.js"></script><link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome-brands.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome-solid.min.css" /></head><body><script src="/js/jquery-3.4.1.min.js"></script><script async="" src="/js/moment.min.js"></script><script>
+//<![CDATA[
+   function replaceAllText(root, find, replace) {
+
+       var walker = document.createTreeWalker(
+           root,
+           NodeFilter.SHOW_ALL,  // filtering only text nodes
+           null,
+           false
+       );
+
+       while (walker.nextNode()) {
+           var c = walker.currentNode
+           if(c.id){
+             c.id = c.id.replace(find, replace)
+           }
+           if(c.getAttribute && c.getAttribute('onclick')){
+             c.setAttribute('onclick', c.getAttribute('onclick').replace(find, replace))
+           }
+           if(c.tagName == "SCRIPT"){
+             c.textContent = c.textContent.replace(find, replace)
+           }
+
+           if(c.tagName == "TEMPLATE"){
+             var content = c.content
+             console.log(content)
+             replaceAllText(content, find, replace)
+           }
+       }
+   }
+
+function newNamespaceKeeping(old){
+   var cache = {}
+   return function(ns){
+     if(!cache[ns] && ns != old){
+       //Keep a cache.  And avoid changing the oldNamespace...
+       window.namespace_num = window.namespace_num || 0
+       window.namespace_num += 1
+       var freshNamespace = ns + "0000" + window.namespace_num
+       cache[ns] = freshNamespace
+     }
+
+     return cache[ns] || ns;
+   }
+}
+
+function getNamespace(component){
+  return component.innerHTML.match(/ns\d+/)[0]
+}
+
+function injectComponent(template, target, oldNamespace){
+       console.log([template, target, oldNamespace])
+       var actualTemplate = null;
+       if(typeof(template) == "string")
+           actualTemplate = document.getElementById(template);
+       else
+           actualTemplate = template;
+
+       var s = actualTemplate.innerHTML
+
+       var content = actualTemplate.content
+       var clonedContent = document.importNode(content, true)
+       replaceAllText(clonedContent, /ns\d+/g, newNamespaceKeeping(oldNamespace))
+
+       document.getElementById(target).appendChild(clonedContent)
+
+       window.injected = document.getElementById(target).lastChild
+       if (actualTemplate.afterInject)
+          actualTemplate.afterInject(window.injected)
+}
+//]]>
+</script><script async="" src="/js/p5.min.js"></script><div id="ns5790_main" class="p-5 card bg-transparent" style="overflow:hidden;height:300px;" data-ns="ns5790"><div class="card border-dark p-2 mx-auto" class="border-dark p-2 mx-auto" style="overflow:hidden;"><h4 class="mb-0">Recursive Trees 1</h4></div><style>
+#ns5790_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+var ns5790_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns5790_isMobile.Android() || ns5790_isMobile.BlackBerry() || ns5790_isMobile.iOS() || ns5790_isMobile.Opera() || ns5790_isMobile.Windows());
+            }
+        };
+var ns5790_sketch = function(p){
+  let theta;
+
+  p.setup = function() {
+   var parent = document.getElementById("ns5790_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns5790_canvas');
+   canvas.style('display','block');
+   canvas.parent("ns5790_main");
+  }
+
+  p.draw = function() {
+    p.background('black');
+    p.frameRate(30);
+    //p.strokeWeight(2);
+    p.strokeCap(p.SQUARE);
+    p.stroke('rgba(0, 255, 0, 0.5)');
+    // Let's pick an angle 0 to 90 degrees based on the mouse position
+    let a = (p.mouseX / p.width) * 90;
+    // Convert it to radians
+    theta = p.radians(a);
+    // Start the tree from the bottom of the screen
+    p.translate(100,p.height);
+    // Draw a line 120 pixels
+    p.line(0,0,0,-120);
+    // Move to the end of that line
+    p.translate(0,-120);
+    // Start the recursive branching!
+    branch(140);
+
+    //p.strokeWeight(2);
+    p.stroke('rgba(255, 255, 0, 0.5)');
+    p.translate(100,120);
+    p.line(0,0,0,-60);
+    p.translate(0,-60);
+    branch(100);
+
+  }
+
+  function branch(h) {
+    // Each branch will be 2/3rds the size of the previous one
+    h *= 0.66;
+
+    // All recursive functions must have an exit condition!!!!
+    // Here, ours is when the length of the branch is 2 pixels or less
+    if (h > 2) {
+      p.push();    // Save the current state of transformation (i.e. where are we now)
+      p.rotate(theta);   // Rotate by theta
+      p.line(0, 0, 0, -h);  // Draw the branch
+      p.translate(0, -h); // Move to the end of the branch
+      branch(h);       // Ok, now call myself to draw two new branches!!
+      p.pop();     // Whenever we get back here, we "pop" in order to restore the previous matrix state
+
+      // Repeat the same thing, only branch off to the "left" this time!
+      p.push();
+      p.rotate(-theta);
+      p.line(0, 0, 0, -h);
+      p.translate(0, -h);
+      branch(h);
+      p.pop();
+    }
+  }
+
+  p.windowResized = function() {
+   var parent = document.getElementById("ns5790_main");
+
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   };
+};
+
+const ns5790_onload = function(){
+  if (ns5790_isMobile.any()){
+   var parent = document.getElementById("ns5790_main");
+   parent.classList.remove('bg-transparent');
+   parent.style.backgroundColor = 'black';
+  }
+  else {
+   let ns5790_p5 = new p5(ns5790_sketch,'ns5790_canvas');
+  }
+ }
+ if(window.addEventListener){
+  window.addEventListener('load', ns5790_onload);
+  }else{
+  window.attachEvent('onload', ns5790_onload);
+ }
+//]]>
+</script><div id="ns5791_main" class="p-5 card bg-transparent" style="overflow:hidden;height:300px;" data-ns="ns5791"><div class="card border-dark p-2 mx-auto" class="border-dark p-2 mx-auto" style="overflow:hidden;"><h4 class="mb-0">Recursive Trees 2</h4></div><style>
+#ns5791_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+var ns5791_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns5791_isMobile.Android() || ns5791_isMobile.BlackBerry() || ns5791_isMobile.iOS() || ns5791_isMobile.Opera() || ns5791_isMobile.Windows());
+            }
+        };
+var ns5791_sketch = function(p){
+  let theta;
+
+  p.setup = function() {
+   var parent = document.getElementById("ns5791_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns5791_canvas');
+   canvas.style('display','block');
+   canvas.parent("ns5791_main");
+  }
+
+  p.draw = function() {
+    p.background('#6c757d');
+    p.frameRate(30);
+    //p.strokeWeight(2);
+    p.strokeCap(p.SQUARE);
+    p.stroke('rgba(255, 200, 0, 0.5)');
+    // Let's pick an angle 0 to 90 degrees based on the mouse position
+    let a = (p.mouseX / p.width) * 90;
+    // Convert it to radians
+    theta = p.radians(a);
+    // Start the tree from the bottom of the screen
+    p.translate(100,p.height);
+    // Draw a line 120 pixels
+    p.line(0,0,0,-120);
+    // Move to the end of that line
+    p.translate(0,-120);
+    // Start the recursive branching!
+    branch(140);
+
+    //p.strokeWeight(2);
+    p.stroke('rgba(237, 70, 41, 0.5)');
+    p.translate(100,120);
+    p.line(0,0,0,-60);
+    p.translate(0,-60);
+    branch(100);
+
+  }
+
+  function branch(h) {
+    // Each branch will be 2/3rds the size of the previous one
+    h *= 0.66;
+
+    // All recursive functions must have an exit condition!!!!
+    // Here, ours is when the length of the branch is 2 pixels or less
+    if (h > 2) {
+      p.push();    // Save the current state of transformation (i.e. where are we now)
+      p.rotate(theta);   // Rotate by theta
+      p.line(0, 0, 0, -h);  // Draw the branch
+      p.translate(0, -h); // Move to the end of the branch
+      branch(h);       // Ok, now call myself to draw two new branches!!
+      p.pop();     // Whenever we get back here, we "pop" in order to restore the previous matrix state
+
+      // Repeat the same thing, only branch off to the "left" this time!
+      p.push();
+      p.rotate(-theta);
+      p.line(0, 0, 0, -h);
+      p.translate(0, -h);
+      branch(h);
+      p.pop();
+    }
+  }
+
+  p.windowResized = function() {
+   var parent = document.getElementById("ns5791_main");
+
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   };
+};
+
+const ns5791_onload = function(){
+  if (ns5791_isMobile.any()){
+   var parent = document.getElementById("ns5791_main");
+   parent.classList.remove('bg-transparent');
+   parent.style.backgroundColor = '#6c757d';
+  }
+  else {
+   let ns5791_p5 = new p5(ns5791_sketch,'ns5791_canvas');
+  }
+ }
+ if(window.addEventListener){
+  window.addEventListener('load', ns5791_onload);
+  }else{
+  window.attachEvent('onload', ns5791_onload);
+ }
+//]]>
+</script><div id="ns5792_main" class="p-5 card bg-transparent" style="overflow:hidden;height:300px;" data-ns="ns5792"><div class="card border-dark p-2 mx-auto" class="border-dark p-2 mx-auto" style="overflow:hidden;"><h4 class="mb-0">Recursive Trees 3</h4></div><style>
+#ns5792_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+var ns5792_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns5792_isMobile.Android() || ns5792_isMobile.BlackBerry() || ns5792_isMobile.iOS() || ns5792_isMobile.Opera() || ns5792_isMobile.Windows());
+            }
+        };
+var ns5792_sketch = function(p){
+  let theta;
+
+  p.setup = function() {
+   var parent = document.getElementById("ns5792_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns5792_canvas');
+   canvas.style('display','block');
+   canvas.parent("ns5792_main");
+  }
+
+  p.draw = function() {
+    p.background('white');
+    p.frameRate(30);
+    //p.strokeWeight(2);
+    p.strokeCap(p.SQUARE);
+    p.stroke('rgba(0, 255, 128, 0.5)');
+    // Let's pick an angle 0 to 90 degrees based on the mouse position
+    let a = (p.mouseX / p.width) * 90;
+    // Convert it to radians
+    theta = p.radians(a);
+    // Start the tree from the bottom of the screen
+    p.translate(100,p.height);
+    // Draw a line 120 pixels
+    p.line(0,0,0,-120);
+    // Move to the end of that line
+    p.translate(0,-120);
+    // Start the recursive branching!
+    branch(140);
+
+    //p.strokeWeight(2);
+    p.stroke('rgba(255, 0, 255, 0.5)');
+    p.translate(100,120);
+    p.line(0,0,0,-60);
+    p.translate(0,-60);
+    branch(100);
+
+  }
+
+  function branch(h) {
+    // Each branch will be 2/3rds the size of the previous one
+    h *= 0.66;
+
+    // All recursive functions must have an exit condition!!!!
+    // Here, ours is when the length of the branch is 2 pixels or less
+    if (h > 2) {
+      p.push();    // Save the current state of transformation (i.e. where are we now)
+      p.rotate(theta);   // Rotate by theta
+      p.line(0, 0, 0, -h);  // Draw the branch
+      p.translate(0, -h); // Move to the end of the branch
+      branch(h);       // Ok, now call myself to draw two new branches!!
+      p.pop();     // Whenever we get back here, we "pop" in order to restore the previous matrix state
+
+      // Repeat the same thing, only branch off to the "left" this time!
+      p.push();
+      p.rotate(-theta);
+      p.line(0, 0, 0, -h);
+      p.translate(0, -h);
+      branch(h);
+      p.pop();
+    }
+  }
+
+  p.windowResized = function() {
+   var parent = document.getElementById("ns5792_main");
+
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   };
+};
+
+const ns5792_onload = function(){
+  if (ns5792_isMobile.any()){
+   var parent = document.getElementById("ns5792_main");
+   parent.classList.remove('bg-transparent');
+   parent.style.backgroundColor = 'white';
+  }
+  else {
+   let ns5792_p5 = new p5(ns5792_sketch,'ns5792_canvas');
+  }
+ }
+ if(window.addEventListener){
+  window.addEventListener('load', ns5792_onload);
+  }else{
+  window.attachEvent('onload', ns5792_onload);
+ }
+//]]>
+</script><script src="/js/bootstrap.bundle.min.js"></script><script>
+//<![CDATA[
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+//]]>
+</script></body></html>

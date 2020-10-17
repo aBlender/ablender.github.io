@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><script>
+//<![CDATA[
+function preloadSupported() {
+  var relList = document.createElement('link').relList;
+  return !!(relList && relList.supports && relList.supports('preload'));
+}
+//]]>
+</script><script async="" src="/js/modernizr-custom.js"></script><link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome-brands.min.css" /><link rel="stylesheet" type="text/css" href="/css/fontawesome-solid.min.css" /></head><body><script src="/js/jquery-3.4.1.min.js"></script><script async="" src="/js/moment.min.js"></script><script>
+//<![CDATA[
+   function replaceAllText(root, find, replace) {
+
+       var walker = document.createTreeWalker(
+           root,
+           NodeFilter.SHOW_ALL,  // filtering only text nodes
+           null,
+           false
+       );
+
+       while (walker.nextNode()) {
+           var c = walker.currentNode
+           if(c.id){
+             c.id = c.id.replace(find, replace)
+           }
+           if(c.getAttribute && c.getAttribute('onclick')){
+             c.setAttribute('onclick', c.getAttribute('onclick').replace(find, replace))
+           }
+           if(c.tagName == "SCRIPT"){
+             c.textContent = c.textContent.replace(find, replace)
+           }
+
+           if(c.tagName == "TEMPLATE"){
+             var content = c.content
+             console.log(content)
+             replaceAllText(content, find, replace)
+           }
+       }
+   }
+
+function newNamespaceKeeping(old){
+   var cache = {}
+   return function(ns){
+     if(!cache[ns] && ns != old){
+       //Keep a cache.  And avoid changing the oldNamespace...
+       window.namespace_num = window.namespace_num || 0
+       window.namespace_num += 1
+       var freshNamespace = ns + "0000" + window.namespace_num
+       cache[ns] = freshNamespace
+     }
+
+     return cache[ns] || ns;
+   }
+}
+
+function getNamespace(component){
+  return component.innerHTML.match(/ns\d+/)[0]
+}
+
+function injectComponent(template, target, oldNamespace){
+       console.log([template, target, oldNamespace])
+       var actualTemplate = null;
+       if(typeof(template) == "string")
+           actualTemplate = document.getElementById(template);
+       else
+           actualTemplate = template;
+
+       var s = actualTemplate.innerHTML
+
+       var content = actualTemplate.content
+       var clonedContent = document.importNode(content, true)
+       replaceAllText(clonedContent, /ns\d+/g, newNamespaceKeeping(oldNamespace))
+
+       document.getElementById(target).appendChild(clonedContent)
+
+       window.injected = document.getElementById(target).lastChild
+       if (actualTemplate.afterInject)
+          actualTemplate.afterInject(window.injected)
+}
+//]]>
+</script><script async="" src="/js/p5.min.js"></script><div id="ns4791_main" class="p-5 card bg-transparent" style="overflow:hidden;height:300px;" data-ns="ns4791"><div class="card border-dark p-2 mx-auto" class="border-dark p-2 mx-auto" style="overflow:hidden;"><h4 class="mb-0">Paint Demo 1</h4></div><style>
+#ns4791_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+var ns4791_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns4791_isMobile.Android() || ns4791_isMobile.BlackBerry() || ns4791_isMobile.iOS() || ns4791_isMobile.Opera() || ns4791_isMobile.Windows());
+            }
+        };
+var ns4791_sketch = function(p){
+  var img;
+  var smallPoint, largePoint;
+
+  var colors = [];
+  var index = 0;
+
+  var angle = 0;
+
+  // function preload() {
+   //   img = loadImage("../images/bg.jpg");
+
+   // }
+  var alph = 10;
+
+  p.setup = function(){
+   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns4791_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns4791_canvas');
+   canvas.style('display','block');
+   canvas.parent("ns4791_main");
+
+   colors.push(p.color('rgba(255, 200, 0, 0.024)'));
+   colors.push(p.color('rgba(237, 70, 41, 0.004)'));
+   //colors.push(p.color(123, 123, 98, alph));
+   // colors.push(p.color(64, 64, 64, alph));
+   smallPoint = 20;
+   largePoint = 60;
+   p.imageMode(p.CENTER);
+   p.noStroke();
+   p.clear();
+   p.angleMode(p.RADIANS);
+   p.background('#6c757d');
+   };
+
+  p.draw = function() {
+
+   for (var i = 0; i < 15; i++) {
+    var v = p5.Vector.random2D();
+
+    var wave = p.map(p.sin(angle), -1, 1, 0, 4);
+
+    v.mult(p.random(1, 20*wave));
+    var pointillize = p.random(smallPoint, largePoint);
+    var x = p.mouseX + v.x;//floor(p.random(img.width));
+    var y = p.mouseY + v.y;//floor(p.random(img.height));
+    //var pix = p.img.get(x, y);
+    //p.fill(pix[0],pix[1], pix[2], 52);
+    p.fill(colors[index]);
+    p.ellipse(x, y, pointillize, pointillize);
+   }
+
+   if (p.random(1) < 0.01) {
+    index = (index + 1) % colors.length;
+   }
+
+   angle += 0.02;
+   };
+
+  p.windowResized = function() {
+   var parent = document.getElementById("ns4791_main");
+
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   };
+};
+ const ns4791_onload = function(){
+  if (ns4791_isMobile.any()){
+   var parent = document.getElementById("ns4791_main");
+   parent.classList.remove('bg-transparent');
+   parent.style.backgroundColor = '#6c757d';
+  }
+  else {
+   let ns4791_p5 = new p5(ns4791_sketch,'ns4791_canvas');
+  }
+ }
+ if(window.addEventListener){
+  window.addEventListener('load', ns4791_onload);
+  }else{
+  window.attachEvent('onload', ns4791_onload);
+ }
+//]]>
+</script><div id="ns4792_main" class="p-5 card bg-transparent" style="overflow:hidden;height:300px;" data-ns="ns4792"><div class="card border-dark p-2 mx-auto" class="border-dark p-2 mx-auto" style="overflow:hidden;"><h4 class="mb-0">Paint Demo 2</h4></div><style>
+#ns4792_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+var ns4792_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns4792_isMobile.Android() || ns4792_isMobile.BlackBerry() || ns4792_isMobile.iOS() || ns4792_isMobile.Opera() || ns4792_isMobile.Windows());
+            }
+        };
+var ns4792_sketch = function(p){
+  var img;
+  var smallPoint, largePoint;
+
+  var colors = [];
+  var index = 0;
+
+  var angle = 0;
+
+  // function preload() {
+   //   img = loadImage("../images/bg.jpg");
+
+   // }
+  var alph = 10;
+
+  p.setup = function(){
+   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns4792_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns4792_canvas');
+   canvas.style('display','block');
+   canvas.parent("ns4792_main");
+
+   colors.push(p.color('rgba(0, 255, 255, 0.024)'));
+   colors.push(p.color('rgba(255, 0, 255, 0.004)'));
+   //colors.push(p.color(123, 123, 98, alph));
+   // colors.push(p.color(64, 64, 64, alph));
+   smallPoint = 20;
+   largePoint = 60;
+   p.imageMode(p.CENTER);
+   p.noStroke();
+   p.clear();
+   p.angleMode(p.RADIANS);
+   p.background('white');
+   };
+
+  p.draw = function() {
+
+   for (var i = 0; i < 15; i++) {
+    var v = p5.Vector.random2D();
+
+    var wave = p.map(p.sin(angle), -1, 1, 0, 4);
+
+    v.mult(p.random(1, 20*wave));
+    var pointillize = p.random(smallPoint, largePoint);
+    var x = p.mouseX + v.x;//floor(p.random(img.width));
+    var y = p.mouseY + v.y;//floor(p.random(img.height));
+    //var pix = p.img.get(x, y);
+    //p.fill(pix[0],pix[1], pix[2], 52);
+    p.fill(colors[index]);
+    p.ellipse(x, y, pointillize, pointillize);
+   }
+
+   if (p.random(1) < 0.01) {
+    index = (index + 1) % colors.length;
+   }
+
+   angle += 0.02;
+   };
+
+  p.windowResized = function() {
+   var parent = document.getElementById("ns4792_main");
+
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   };
+};
+ const ns4792_onload = function(){
+  if (ns4792_isMobile.any()){
+   var parent = document.getElementById("ns4792_main");
+   parent.classList.remove('bg-transparent');
+   parent.style.backgroundColor = 'white';
+  }
+  else {
+   let ns4792_p5 = new p5(ns4792_sketch,'ns4792_canvas');
+  }
+ }
+ if(window.addEventListener){
+  window.addEventListener('load', ns4792_onload);
+  }else{
+  window.attachEvent('onload', ns4792_onload);
+ }
+//]]>
+</script><div id="ns4793_main" class="p-5 card bg-transparent" style="overflow:hidden;height:300px;" data-ns="ns4793"><div class="card border-dark p-2 mx-auto" class="border-dark p-2 mx-auto" style="overflow:hidden;"><h4 class="mb-0">Paint Demo 2</h4></div><style>
+#ns4793_canvas {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+}
+</style></div><script>
+//<![CDATA[
+var ns4793_isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (ns4793_isMobile.Android() || ns4793_isMobile.BlackBerry() || ns4793_isMobile.iOS() || ns4793_isMobile.Opera() || ns4793_isMobile.Windows());
+            }
+        };
+var ns4793_sketch = function(p){
+  var img;
+  var smallPoint, largePoint;
+
+  var colors = [];
+  var index = 0;
+
+  var angle = 0;
+
+  // function preload() {
+   //   img = loadImage("../images/bg.jpg");
+
+   // }
+  var alph = 10;
+
+  p.setup = function(){
+   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+   var parent = document.getElementById("ns4793_main");
+   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   canvas.id('ns4793_canvas');
+   canvas.style('display','block');
+   canvas.parent("ns4793_main");
+
+   colors.push(p.color('rgba(100, 200, 0, 0.024)'));
+   colors.push(p.color('rgba(128, 0, 255, 0.004)'));
+   //colors.push(p.color(123, 123, 98, alph));
+   // colors.push(p.color(64, 64, 64, alph));
+   smallPoint = 20;
+   largePoint = 60;
+   p.imageMode(p.CENTER);
+   p.noStroke();
+   p.clear();
+   p.angleMode(p.RADIANS);
+   p.background('black');
+   };
+
+  p.draw = function() {
+
+   for (var i = 0; i < 15; i++) {
+    var v = p5.Vector.random2D();
+
+    var wave = p.map(p.sin(angle), -1, 1, 0, 4);
+
+    v.mult(p.random(1, 20*wave));
+    var pointillize = p.random(smallPoint, largePoint);
+    var x = p.mouseX + v.x;//floor(p.random(img.width));
+    var y = p.mouseY + v.y;//floor(p.random(img.height));
+    //var pix = p.img.get(x, y);
+    //p.fill(pix[0],pix[1], pix[2], 52);
+    p.fill(colors[index]);
+    p.ellipse(x, y, pointillize, pointillize);
+   }
+
+   if (p.random(1) < 0.01) {
+    index = (index + 1) % colors.length;
+   }
+
+   angle += 0.02;
+   };
+
+  p.windowResized = function() {
+   var parent = document.getElementById("ns4793_main");
+
+   //p.resizeCanvas(p.windowWidth, p.windowHeight);
+   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
+
+   };
+};
+ const ns4793_onload = function(){
+  if (ns4793_isMobile.any()){
+   var parent = document.getElementById("ns4793_main");
+   parent.classList.remove('bg-transparent');
+   parent.style.backgroundColor = 'black';
+  }
+  else {
+   let ns4793_p5 = new p5(ns4793_sketch,'ns4793_canvas');
+  }
+ }
+ if(window.addEventListener){
+  window.addEventListener('load', ns4793_onload);
+  }else{
+  window.attachEvent('onload', ns4793_onload);
+ }
+//]]>
+</script><script src="/js/bootstrap.bundle.min.js"></script><script>
+//<![CDATA[
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+//]]>
+</script></body></html>
