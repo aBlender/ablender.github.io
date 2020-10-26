@@ -164,7 +164,7 @@ a:hover, .navbar-dark .navbar-nav li a:hover, .navbar-dark .navbar-brand a:hover
   element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M10.5 5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm.061 3.073a4 4 0 10-5.123 0 6.004 6.004 0 00-3.431 5.142.75.75 0 001.498.07 4.5 4.5 0 018.99 0 .75.75 0 101.498-.07 6.005 6.005 0 00-3.432-5.142z"></path></svg>';
 })();
 //]]>
-</script></span>About</a></div></ul></div></nav><div id="main"><div id="ns12173_main" class="p-3 pt-5 card bg-transparent mb-0 text-center" style="height:100vh;" data-ns="ns12173"><div class="card bg-light p-3 mx-auto mt-auto mb-3 p-3 p-sm-5" class="bg-light p-3 mx-auto mt-auto mb-3 p-3 p-sm-5" style="font-family:'Courier New', Courier, monospace;max-width:100%;"><div class="card bg-dark border-secondary p-3 text-primary text-left h-100" class="bg-dark border-secondary p-3 text-primary text-left h-100" style="overflow:hidden;"><canvas id="gameCanvas" width="800" height="600"></canvas><script>
+</script></span>About</a></div></ul></div></nav><div id="main"><div id="ns1365387_main" class="p-3 pt-5 card bg-transparent mb-0 text-center" style="height:100vh;" data-ns="ns1365387"><div class="card bg-light p-3 mx-auto mt-auto mb-3 p-3 p-sm-5" class="bg-light p-3 mx-auto mt-auto mb-3 p-3 p-sm-5" style="font-family:'Courier New', Courier, monospace;max-width:100%;"><div class="card bg-dark border-secondary p-3 text-primary text-left h-100" class="bg-dark border-secondary p-3 text-primary text-left h-100" style="overflow:hidden;"><canvas id="gameCanvas" width="800" height="600"></canvas><script>
 //<![CDATA[
 var canvas;
 var canvasContext;
@@ -349,7 +349,7 @@ function colorRect(leftX, topY, width, height, drawColor){
 }
 //]]>
 </script></div></div><div class="card bg-light p-3 mx-auto mt-auto mb-3" class="bg-light p-3 mx-auto mt-auto mb-3" style="font-family:'Courier New', Courier, monospace;max-width:100%;"><div class="card bg-dark border-secondary p-3 text-primary text-left h-100" class="bg-dark border-secondary p-3 text-primary text-left h-100" style="overflow:hidden;"><p class="m-0">This website was made using a DSL (domain specific language) written in Racket. See more details <a href="https://github.com/aBlender/racket/tree/main/web-examples"><b>here</b></a>.</p></div></div><style>
-#ns12173_canvas {
+#ns1365387_canvas {
  position:absolute;
  top:0;
  left:0;
@@ -359,7 +359,7 @@ function colorRect(leftX, topY, width, height, drawColor){
 }
 </style></div><script>
 //<![CDATA[
-var ns12173_isMobile = {
+var ns1365387_isMobile = {
            Android: function () {
                return navigator.userAgent.match(/Android/i);
            },
@@ -376,10 +376,10 @@ var ns12173_isMobile = {
                return navigator.userAgent.match(/IEMobile/i);
            },
            any: function () {
-               return (ns12173_isMobile.Android() || ns12173_isMobile.BlackBerry() || ns12173_isMobile.iOS() || ns12173_isMobile.Opera() || ns12173_isMobile.Windows());
+               return (ns1365387_isMobile.Android() || ns1365387_isMobile.BlackBerry() || ns1365387_isMobile.iOS() || ns1365387_isMobile.Opera() || ns1365387_isMobile.Windows());
            }
        };
-var ns12173_sketch = function(p){
+var ns1365387_sketch = function(p){
  // TURTLE STUFF:
  let x, y; // the current position of the turtle
  let currentangle = -150; // which way the turtle is pointing
@@ -395,12 +395,12 @@ var ns12173_sketch = function(p){
 
  p.setup = function() {
   //var canvas = p.createCanvas(p.windowWidth, p.windowHeight);
-  var parent = document.getElementById("ns12173_main");
+  var parent = document.getElementById("ns1365387_main");
   var canvas = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
 
-  canvas.id('ns12173_canvas');
+  canvas.id('ns1365387_canvas');
   //canvas.style('display','block');
-  canvas.parent("ns12173_main");
+  canvas.parent("ns1365387_main");
 
   p.background('#041109');
   p.stroke('rgba(0,255,128,0.4)');
@@ -485,7 +485,7 @@ var ns12173_sketch = function(p){
  }
  p.windowResized = function() {
   //p.resizeCanvas(p.windowWidth, p.windowHeight);
-  var parent = document.getElementById("ns12173_main");
+  var parent = document.getElementById("ns1365387_main");
   p.resizeCanvas(parent.offsetWidth, parent.offsetHeight);
   p.background('#041109');
   x = p.width/3;
@@ -494,20 +494,20 @@ var ns12173_sketch = function(p){
   whereinstring = 0;
   };
  };
-const ns12173_onload = function(){
- if (ns12173_isMobile.any()){
-  var parent = document.getElementById("ns12173_main");
+const ns1365387_onload = function(){
+ if (ns1365387_isMobile.any()){
+  var parent = document.getElementById("ns1365387_main");
   parent.classList.remove('bg-transparent');
   parent.style.backgroundColor = '#041109';
  }
  else {
-  let ns12173_p5 = new p5(ns12173_sketch,'ns12173_canvas');
+  let ns1365387_p5 = new p5(ns1365387_sketch,'ns1365387_canvas');
  }
 }
 if(window.addEventListener){
- window.addEventListener('load', ns12173_onload);
+ window.addEventListener('load', ns1365387_onload);
  }else{
- window.attachEvent('onload', ns12173_onload);
+ window.attachEvent('onload', ns1365387_onload);
 }
 //]]>
 </script></div><script src="/js/bootstrap.bundle.min.js"></script><script>
